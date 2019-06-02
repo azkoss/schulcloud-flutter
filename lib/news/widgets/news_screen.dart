@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../bloc.dart';
 import 'article_preview.dart';
+import 'article.dart';
 
 /// A screen that displays a list of articles.
 class NewsScreen extends StatelessWidget {
@@ -28,9 +29,11 @@ class ArticleList extends StatelessWidget {
             }
             return Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: snapshot.hasData
-                  ? ArticlePreview(article: snapshot.data)
-                  : ArticlePreview.placeholder(),
+              child: ArticleView(
+                key: Key('article_$index'),
+                article: snapshot.data,
+                isPreview: true,
+              ),
             );
           },
         );

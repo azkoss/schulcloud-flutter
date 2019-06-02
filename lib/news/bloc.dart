@@ -12,7 +12,7 @@ class Bloc {
   );
 
   static Future<List<Article>> _loadPage(int page) async {
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 2));
     return [
       Article(
         id: 'article_${page}_mona',

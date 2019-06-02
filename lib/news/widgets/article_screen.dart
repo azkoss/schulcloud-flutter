@@ -1,49 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../model.dart';
-import 'author.dart';
-import 'article_image.dart';
-import 'headline.dart';
-import 'section.dart';
-import 'theme.dart';
+import 'article.dart';
 
 /// Displays an article for the user to read.
 ///
 /// If a landscape image is provided, it's displayed above the headline.
 /// If a portrait image is provided, it's displayed below it.
-class ArticleScreen extends StatelessWidget {
-  ArticleScreen({@required this.article}) : assert(article != null);
+class ArticleScreen extends StatefulWidget {
+  ArticleScreen({
+    @required this.key,
+    @required this.article,
+  })  : assert(key != null),
+        assert(article != null);
 
+  final Key key;
   final Article article;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: LayoutBuilder(
-        builder: (ctx, constraints) {
-          var width = constraints.maxWidth;
-          double margin = width < 500 ? 0 : width * 0.08;
-          double padding = (width * 0.06).clamp(32.0, 64.0);
+  _ArticleScreenState createState() => _ArticleScreenState();
+}
 
-          return Provider<ArticleTheme>(
-            builder: (_) =>
-                ArticleTheme(darkColor: Colors.purple, padding: padding),
-            child: ListView(
-              padding: MediaQuery.of(context).padding +
-                  EdgeInsets.symmetric(horizontal: margin) +
-                  const EdgeInsets.symmetric(vertical: 16),
-              children: <Widget>[ArticleView(article: article)],
+class _ArticleScreenState extends State<ArticleScreen> {
+  bool isInitialized = false;
+  bool isPreview = true;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child = Scaffold(
+      backgroundColor: Colors.transparent,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverChildListDelegate([
+            ArticleView(
+              key: widget.key,
+              article: widget.article,
+              isPreview: isPreview,
+              duration: Duration(milliseconds: 200),
             ),
-          );
-        },
+          ]),
+        ],
       ),
     );
+
+    if (!isInitialized) {
+      isInitialized = true;
+      Future.delayed(
+        Duration(milliseconds: 100),
+        () => setState(() => isPreview = false),
+      );
+    }
+
+    return child;
   }
 }
 
-class ArticleView extends StatefulWidget {
+/*class ArticleView extends StatefulWidget {
   const ArticleView({@required this.article}) : assert(article != null);
 
   final Article article;
@@ -71,7 +83,7 @@ class _ArticleViewState extends State<ArticleView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Section(child: Text(widget.article.section)),
-        HeadlineBox(
+        Headline(
           title: Text(widget.article.title),
           smallText: Text(widget.article.published.toString()),
         ),
@@ -100,7 +112,7 @@ class _ArticleViewState extends State<ArticleView> {
         ),
         Transform.translate(
           offset: Offset(0, -48),
-          child: HeadlineBox(
+          child: Headline(
             title: Text(widget.article.title),
             smallText: Text(widget.article.published.toString()),
           ),
@@ -132,7 +144,7 @@ class _ArticleViewState extends State<ArticleView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Section(child: Text(widget.article.section)),
-            HeadlineBox(
+            Headline(
               title: Text(widget.article.title),
               smallText: Text(widget.article.published.toString()),
             ),
@@ -169,4 +181,4 @@ class _ArticleViewState extends State<ArticleView> {
       ),
     );
   }
-}
+}*/

@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'theme.dart';
 
 /// A section banner that is usually displayed at the top of an article.
-///
-/// The colors and padding come from the enclosing [ArticleTheme].
 class Section extends StatelessWidget {
-  const Section({@required this.child}) : assert(child != null);
+  const Section({
+    @required this.paddingLeft,
+    @required this.lightColor,
+    @required this.darkColor,
+    @required this.child,
+    @required this.duration,
+  }) : assert(child != null);
 
+  final double paddingLeft;
+  final Color lightColor;
+  final Color darkColor;
   final Widget child;
+  final Duration duration;
 
   @override
   Widget build(BuildContext context) {
-    var theme = Provider.of<ArticleTheme>(context);
-
     return ClipPath(
       clipper: _SectionClipper(),
-      child: Container(
+      child: AnimatedContainer(
+        duration: duration,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [theme.lightColor, theme.darkColor],
+            colors: [lightColor, darkColor],
           ),
         ),
-        padding: EdgeInsets.fromLTRB(theme.padding, 8, 16, 8),
+        padding: EdgeInsets.fromLTRB(paddingLeft, 8, 16, 8),
         child: DefaultTextStyle(
           style: DefaultTextStyle.of(context).style.apply(color: Colors.white),
           child: child,

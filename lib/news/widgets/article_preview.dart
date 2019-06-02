@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:schulcloud/utils/placeholder.dart';
+import 'package:schulcloud/utils/text_or_placeholder.dart';
 
 import '../model.dart';
 import 'article_image.dart';
@@ -54,8 +55,6 @@ class _ArticlePreviewState extends State<ArticlePreview> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildSection(),
-                _buildImage(),
                 SizedBox(height: 8),
                 _buildSmallText(),
                 _buildTitle(),
@@ -68,42 +67,18 @@ class _ArticlePreviewState extends State<ArticlePreview> {
     );
   }
 
-  Widget _buildSection() {
-    if (isPlaceholder)
-      return Section(child: PlaceholderText(color: Colors.white));
-    else
-      return Section(child: Text(article.section));
-  }
-
-  Widget _buildImage() {
-    if (isPlaceholder)
-      return GradientArticleImageView(image: null);
-    else if (article.image == null)
-      return Container();
-    else
-      return Hero(
-        tag: article,
-        child: GradientArticleImageView(image: article?.image),
-      );
-  }
-
   Widget _buildSmallText() {
-    if (isPlaceholder)
-      return PlaceholderText();
-    else
-      return Text(
-        'vor 3 Tagen von ${article.author.name == 'unbekannt'}',
-        style: TextStyle(color: Colors.black54),
-      );
+    return TextOrPlaceholder(
+      isPlaceholder
+          ? null
+          : 'vor 3 Tagen von ${article.author.name == 'unbekannt'}',
+      style: TextStyle(color: Colors.black54),
+    );
   }
 
   Widget _buildTitle() {
     final style = Theme.of(context).textTheme.display2;
-
-    if (isPlaceholder)
-      return PlaceholderText(style: style);
-    else
-      return Text(article.title, style: style);
+    return TextOrPlaceholder(article?.title, style: style);
   }
 
   Widget _buildContent() {

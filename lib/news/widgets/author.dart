@@ -18,7 +18,7 @@ class AuthorView extends StatefulWidget {
 class _AuthorViewState extends State<AuthorView> {
   Author get author => widget.author;
   bool get isPlaceholder => author == null;
-  bool get hasPhoto => author.photoUrl != null;
+  bool get hasPhoto => author?.photoUrl != null;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _AuthorViewState extends State<AuthorView> {
       child: Stack(
         children: <Widget>[
           _buildName(),
-          if (hasPhoto) _buildAvatar(),
+          if (hasPhoto ?? false) _buildAvatar(),
         ],
       ),
     );
