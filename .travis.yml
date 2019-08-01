@@ -12,8 +12,6 @@ addons:
 services:
   - docker
 before_script:
-  - docker pull cirrusci/flutter
-  
   # Actually download the Flutter SDK and generate auto-generated dart files.
   - docker run cirrusci/flutter flutter doctor
   - docker run cirrusci/flutter flutter packages get
