@@ -9,18 +9,20 @@ addons:
     packages:
       - libstdc++6
       #- fonts-droid
+services:
+  - docker
 before_script:
-  # Clone Flutter.
-  - git clone https://github.com/flutter/flutter.git -b beta .flutter
+  - docker pull cirrusci/flutter
+  
   # Actually download the Flutter SDK and generate auto-generated dart files.
-  - ./.flutter/bin/flutter doctor
-  - ./.flutter/bin/flutter packages get
-  - ./.flutter/bin/flutter packages pub run build_runner build
+  - docker run cirrusci/flutter flutter doctor
+  - docker run cirrusci/flutter flutter packages get
+  - docker run cirrusci/flutter flutter packages pub run build_runner build
 script:
   # For now, don't run tests.
   #- ./.flutter/bin/flutter test
   # Lint the source code.
-  - ./.flutter/bin/flutter analyze
+  - docker run cirrusci/flutter flutter analyze
 cache:
   directories:
     - $HOME/.pub-cache
