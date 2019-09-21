@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schulcloud/app/app.dart';
 
-import '../data.dart';
 import '../bloc.dart';
 
 class HomeworkDashboardCard extends StatelessWidget {
